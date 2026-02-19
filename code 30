@@ -1,0 +1,33 @@
+class Solution:
+    def median(self, mat):
+        n = len(mat)
+        m = len(mat[0])
+        
+        # Find min and max elements
+        low = min(row[0] for row in mat)
+        high = max(row[m - 1] for row in mat)
+        
+        required = (n * m) // 2
+        
+        while low <= high:
+            mid = (low + high) // 2
+            count = 0
+            
+            # Count elements <= mid
+            for row in mat:
+                # Binary search in each row
+                l, r = 0, m
+                while l < r:
+                    mid_idx = (l + r) // 2
+                    if row[mid_idx] <= mid:
+                        l = mid_idx + 1
+                    else:
+                        r = mid_idx
+                count += l
+            
+            if count <= required:
+                low = mid + 1
+            else:
+                high = mid - 1
+        
+        return low
